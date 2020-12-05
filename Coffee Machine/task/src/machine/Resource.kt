@@ -1,11 +1,11 @@
 package machine
 
-sealed class Resource(amount: Int, private val name: String) {
+sealed class Resource(amount: Int, val name: String) {
 
     var amount = amount
         private set
 
-    fun availableStatus() = "$amount of $name"
+    open fun availableStatus() = "$amount of $name"
 
     fun remove(quantity: Int) {
         amount -= quantity
@@ -23,5 +23,9 @@ sealed class Resource(amount: Int, private val name: String) {
     class Milk(amount: Int) : ProductionResource(amount = amount, name = "milk", perOneCup = 50)
     class Beans(amount: Int) : ProductionResource(amount = amount, name = "coffee beans", perOneCup = 15)
     class DisposableCups(amount: Int) : ProductionResource(amount = amount, name = "disposable cups", perOneCup = 1)
-    class Money(amount: Int) : Resource(amount, "money")
+    class Money(amount: Int) : Resource(amount, "money") {
+        override fun availableStatus(): String {
+            return "\$${super.availableStatus()}"
+        }
+    }
 }

@@ -47,11 +47,17 @@ class CoffeeMachine(
     }
 
     private fun make(portion: CoffeePortion) {
-        water.remove(portion.water)
-        milk.remove(portion.milk)
-        beans.remove(portion.beans)
-        disposableCups.remove(1)
-        money.add(portion.cost)
+        val notEnough = productionResources.filter { it.availableCups <= 0 }
+        if (notEnough.isEmpty()) {
+            println("I have enough resources, making you a coffee!")
+            water.remove(portion.water)
+            milk.remove(portion.milk)
+            beans.remove(portion.beans)
+            disposableCups.remove(1)
+            money.add(portion.cost)
+        } else {
+            notEnough.forEach { println("Sorry, not enough ${it.name}!") }
+        }
     }
 
     fun fill(waterAmount: Int, milkAmount: Int, beansAmount: Int, cupsAmount: Int) {

@@ -12,15 +12,15 @@ fun main() {
 
     var command: String?
     do {
-        coffeeMachine.status()
         println("Write action (buy, fill, take):")
         command = readLine()
         when (command) {
             "buy" -> {
-                when (readInt("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:")) {
-                    1 -> coffeeMachine.espresso()
-                    2 -> coffeeMachine.latte()
-                    3 -> coffeeMachine.cappuccino()
+                println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:")
+                when (readLine()) {
+                    "1" -> coffeeMachine.espresso()
+                    "2" -> coffeeMachine.latte()
+                    "3" -> coffeeMachine.cappuccino()
                 }
             }
             "fill" -> {
@@ -33,8 +33,11 @@ fun main() {
             "take" -> {
                 coffeeMachine.take()
             }
+            "remaining" -> {
+                coffeeMachine.status()
+            }
         }
-    } while (!command.isNullOrEmpty())
+    } while (command != "exit")
 }
 
 private fun readInt(prompt: String): Int {
