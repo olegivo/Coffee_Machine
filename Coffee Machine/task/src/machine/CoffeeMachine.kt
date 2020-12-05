@@ -15,17 +15,29 @@ class CoffeeMachine(
     private val productionResources = listOf(water, milk, beans, disposableCups)
     private val resources = productionResources + money
 
-    fun run(cupsCount: Int) {
-        val minReminder = productionResources
-            .map {
-                it.availableCups - cupsCount
+    fun run(command: String?) {
+        when (command) {
+            "buy" -> {
+                println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:")
+                when (readLine()) {
+                    "1" -> this.espresso()
+                    "2" -> this.latte()
+                    "3" -> this.cappuccino()
+                }
             }
-            .minOrNull()!!
-        if (minReminder >= 0) {
-            print("Yes, I can make that amount of coffee")
-            println(if (minReminder > 0) " (and even $minReminder more than that)" else "")
-        } else {
-            println("No, I can make only ${cupsCount + minReminder} cup(s) of coffee")
+            "fill" -> {
+                val water = readInt("Write how many ml of water the coffee do you want to add:")
+                val milk = readInt("Write how many ml of milk the coffee do you want to add:")
+                val beans = readInt("Write how many grams of coffee beans the coffee do you want to add:")
+                val cups = readInt("Write how many disposable cups of coffee do you want to add:")
+                this.fill(water, milk, beans, cups)
+            }
+            "take" -> {
+                this.take()
+            }
+            "remaining" -> {
+                this.status()
+            }
         }
     }
 
@@ -71,5 +83,10 @@ class CoffeeMachine(
         val allMoney = money.amount
         println("I gave you \$$allMoney")
         money.remove(allMoney)
+    }
+
+    private fun readInt(prompt: String): Int {
+        println(prompt)
+        return readLine()!!.toInt()
     }
 }
